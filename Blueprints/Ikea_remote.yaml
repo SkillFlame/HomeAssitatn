@@ -150,7 +150,7 @@ action:
       light_1: !input target_light.area_id
       lights: {{ 
                 expand(states.light) 
-                |selectattr('entity_id', 'in', light_1)
+                |selectattr('entity_id', 'in', area_entities('Bedroom'))
                 |map(attribute='entity_id')
                 |list
               }}
