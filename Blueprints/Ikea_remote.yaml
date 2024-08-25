@@ -61,13 +61,35 @@ blueprint:
         **Double press events**. Provide a value only if you are using a double press action.
         Increase this value if you notice that the double press action is not triggered
         properly.
-      default: 250
+      default: 400
       selector:
         number:
           unit_of_measurement: milliseconds
           min: 100.0
           max: 5000.0
           step: 10.0
+          mode: slider
+    min_brightness:
+      name: (Optional) Light minimum brightness
+      description: The minimum brightness the light can be set with this automation.
+      default: 1
+      selector:
+        number:
+          min: 1
+          max: 255
+          step: 1
+          unit_of_measurement: brightness
+          mode: slider
+    max_brightness:
+      name: (Optional) Light maximum brightness
+      description: The maximum brightness the light can be set with this automation.
+      default: 255
+      selector:
+        number:
+          min: 0
+          max: 255
+          step: 1
+          unit_of_measurement: brightness
           mode: slider
 alias: Ikea remote via zigbee2mqtt
 description: ""
@@ -122,6 +144,9 @@ action:
       on_double_press: !input on_double_press
       off_double_press: !input off_double_press
       z2m_controller: !input remote_name
+      light: !input target_light
+      min_brightness: !input min_brightness
+      max_brightness: !input max_brightness
   - choose:
       - conditions:
           - condition: trigger
@@ -206,6 +231,7 @@ action:
               sequence:
                 - service: light.turn_on
                   data:
+                    brightness: '{{ [ [state_attr(light,"brightness")-step_long, min_brightness] | max, max_brightness] | min }}'
                     transition: 0.2
                     brightness_step_pct: -5
                   target: !input target_light
