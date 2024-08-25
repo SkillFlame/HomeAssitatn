@@ -144,13 +144,13 @@ action:
       on_double_press: !input on_double_press
       off_double_press: !input off_double_press
       z2m_controller: !input remote_name
-      light: !input target_light
+      area: !input target_light
       lights: "{{ 
                 expand(states.light) 
-                |selectattr('state', 'eq', 'on') 
-                |selectattr('entity_id', 'in', area_entities(light.area_id))
-                |map(attribute='entity_id')
-                |list
+                |selectattr('state', 'eq', 'on')
+                |selectattr('entity_id', 'in', area_entities(area.area_id))
+                |sort(attribute='attributes.brightness', reverse=True)
+                |map(attribute='entity_id') |first 
               }}"
   - choose:
       - conditions:
@@ -237,7 +237,7 @@ action:
               sequence:
                 - if:
                     - condition: template
-                      value_template: "{{ state_attr(lights[0], 'brightness') > 10 }}"
+                      value_template: "{{ state_attr(lights, 'brightness') > 10 }}"
                   then:
                     - service: light.turn_on
                       data:
