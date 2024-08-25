@@ -130,7 +130,7 @@ action:
             then:
               - wait_for_trigger:
                   - platform: mqtt
-                    topic: "{{ 'zigbee2mqtt/' ~ z2m_controller ~ '/action' }}"
+                    topic: "{{ 'zigbee2mqtt/' ~ z2m_controller.name_by_user ~ '/action' }}"
                     payload: "on"
                 timeout:
                   milliseconds: !input helper_double_press_delay
