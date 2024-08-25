@@ -117,6 +117,7 @@ action:
   - variables:
       on_double_press: !input on_double_press
       off_double_press: !input off_double_press
+      z2m_base_topic: !input base_topic
       z2m_controller: !input source_switch_e1743_action
   - choose:
       - conditions:
@@ -129,10 +130,9 @@ action:
                 value_template: "{{ on_double_press }}"
             then:
               - wait_for_trigger:
-                  - platform: state
-                    entity_id: !input source_switch_e1743_action
-                    type: action
-                    subtype: "on"
+                  - platform: mqtt
+                    topic: "{{ 'zigbee2mqtt/' ~ z2m_controller ~ '/action' }}"
+                    payload: "on"
                 timeout:
                   milliseconds: !input helper_double_press_delay
                 continue_on_timeout: true
