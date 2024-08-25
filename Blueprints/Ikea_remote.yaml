@@ -11,6 +11,10 @@ blueprint:
           filter:
             - integration: mqtt
               domain: sensor
+    remote_name:
+      name: (Zigbee2MQTT) Remote Name
+      description: The name of the controller (e.g. IKEA Rodret). **_Choose if you are using Zigbee2MQTT._**
+      default: ""
     target_light:
       name: Target Light
       description: the light you want to control.
@@ -117,7 +121,7 @@ action:
   - variables:
       on_double_press: !input on_double_press
       off_double_press: !input off_double_press
-      z2m_controller: device_attr(device_id(!input source_switch_e1743_action), "name_by_user")
+      z2m_controller: remote_name
   - choose:
       - conditions:
           - condition: trigger
