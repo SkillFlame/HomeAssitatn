@@ -19,7 +19,10 @@ blueprint:
       name: Target Light
       description: the light you want to control.
       selector:
-        target:
+        entity:
+          filter:
+            - integration: mqtt
+              domain: sensor
     on_double_press:
       name: On - Double press event
       description:
@@ -144,7 +147,13 @@ action:
       on_double_press: !input on_double_press
       off_double_press: !input off_double_press
       z2m_controller: !input remote_name
-      light_1: !input target_light
+      light_1: !input target_light.area_id
+      lights: {{ 
+                expand(states.light) 
+                |selectattr('entity_id', 'in', light_1)
+                |map(attribute='entity_id')
+                |list
+              }}
   - choose:
       - conditions:
           - condition: trigger
