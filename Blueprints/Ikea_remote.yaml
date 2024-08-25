@@ -16,6 +16,10 @@ blueprint:
       description: the light you want to control.
       selector:
         target:
+    base_topic:
+      name: (Zigbee2MQTT) Base mqtt topic
+      description: The topic configured in [Z2M addon](https://www.zigbee2mqtt.io/guide/usage/mqtt_topics_and_messages.html).
+      default: zigbee2mqtt
     on_double_press:
       name: On - Double press event
       description:
