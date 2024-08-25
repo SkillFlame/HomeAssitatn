@@ -117,7 +117,7 @@ action:
   - variables:
       on_double_press: !input on_double_press
       off_double_press: !input off_double_press
-      z2m_controller: device_attr(!input source_switch_e1743_action, "name_by_user")
+      z2m_controller: device_attr(device_id(!input source_switch_e1743_action), "name_by_user")
   - choose:
       - conditions:
           - condition: trigger
