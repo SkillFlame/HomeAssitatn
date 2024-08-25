@@ -158,7 +158,7 @@ action:
         ssequence:
           - if:
               - condition: template
-                value_template: "{{ on_double_press }}"
+                value_template: "{{ off_double_press }}"
             then:
               - wait_for_trigger:
                   - platform: mqtt
@@ -170,7 +170,7 @@ action:
               - if:
                   - condition: template
                     value_template: "{{ wait.trigger.idx is defined }}"
-                then: !input on_double_press_action
+                then: !input off_double_press_action
                 else: 
                   - service: light.turn_off
                     data: {}
