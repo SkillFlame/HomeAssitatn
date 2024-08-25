@@ -145,8 +145,6 @@ action:
       off_double_press: !input off_double_press
       z2m_controller: !input remote_name
       light: !input target_light
-      min_brightness: !input min_brightness
-      max_brightness: !input max_brightness
   - choose:
       - conditions:
           - condition: trigger
@@ -228,13 +226,22 @@ action:
               - brightness_move_down
         sequence:
           - repeat:
-              sequence:
-                - service: light.turn_on
-                  data:
-                    brightness: '{{ [ [state_attr(light,"brightness")-step_long, min_brightness] | max, max_brightness] | min }}'
-                    transition: 0.2
-                    brightness_step_pct: -5
-                  target: !input target_light
+              - if:
+                    - condition: template
+                      value_template: "{{ state_attr(light, 'brightness') <= 10}}"
+                  then:
+                    - data:
+                        brightness_pct: 1
+                      target:
+                        area_id: office
+                      action: light.turn_on
+                  else:
+                    - data:
+                        transition: 0.2
+                        brightness_step_pct: -5
+                      target:
+                        area_id: office
+                      action: light.turn_on
                 - delay:
                     hours: 0
                     minutes: 0
