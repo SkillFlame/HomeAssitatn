@@ -16,10 +16,6 @@ blueprint:
       description: the light you want to control.
       selector:
         target:
-    base_topic:
-      name: (Zigbee2MQTT) Base mqtt topic
-      description: The topic configured in [Z2M addon](https://www.zigbee2mqtt.io/guide/usage/mqtt_topics_and_messages.html).
-      default: zigbee2mqtt
     on_double_press:
       name: On - Double press event
       description:
@@ -132,13 +128,7 @@ action:
               - condition: template
                 value_template: "{{ on_double_press }}"
             then:
-              - wait_for_trigger:
-                  - platform: mqtt
-                    topic: "{{ 'zigbee2mqtt/' ~ z2m_controller ~ '/action' }}"
-                    payload: "on"
-                timeout:
-                  milliseconds: !input helper_double_press_delay
-                continue_on_timeout: true
+             
               - if:
                   - condition: template
                     value_template: "{{ wait.trigger.idx is defined }}"
