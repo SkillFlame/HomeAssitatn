@@ -147,6 +147,7 @@ action:
       light_1: !input target_light
       lights: "{{ 
                 expand(states.light) 
+                |selectattr('state', 'eq', 'on') 
                 |selectattr('entity_id', 'in', area_entities(light.area_id))
                 |map(attribute='entity_id')
                 |list
@@ -236,7 +237,7 @@ action:
               sequence:
                 - if:
                     - condition: template
-                      value_template: "{{ state_attr(lights, 'brightness') > 10 }}"
+                      value_template: "{{ state_attr(lights[0], 'brightness') > 10 }}"
                   then:
                     - service: light.turn_on
                       data:
