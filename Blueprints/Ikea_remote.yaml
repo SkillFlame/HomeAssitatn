@@ -230,13 +230,8 @@ action:
               sequence:
                 - if:
                     - condition: template
-                      value_template: "{{ state_attr('light_1.entity_id', 'brightness') <= 10 }}"
+                      value_template: "{{ state_attr('light_1.object_id', 'brightness') > 10 }}"
                   then:
-                    - service: light.turn_on
-                      data:
-                        brightness_pct: 1
-                      target: !input target_light
-                  else:
                     - service: light.turn_on
                       data:
                         brightness_step_pct: -5
