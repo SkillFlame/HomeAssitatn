@@ -226,26 +226,26 @@ action:
               - brightness_move_down
         sequence:
           - repeat:
-              - if:
-                    - condition: template
-                      value_template: "{{ state_attr(light, 'brightness') <= 10}}"
-                  then:
-                    - data:
-                        brightness_pct: 1
-                      target:
-                        area_id: office
-                      action: light.turn_on
-                  else:
-                    - data:
-                        transition: 0.2
-                        brightness_step_pct: -5
-                      target:
-                        area_id: office
-                      action: light.turn_on
-                - delay:
-                    hours: 0
-                    minutes: 0
-                    seconds: 0
-                    milliseconds: 200
-              count: 50
+            - if:
+                - condition: template
+                  value_template: "{{ state_attr(light, 'brightness') <= 10}}"
+              then:
+                - data:
+                    brightness_pct: 1
+                  target:
+                    area_id: office
+                  action: light.turn_on
+              else:
+                - data:
+                    transition: 0.2
+                    brightness_step_pct: -5
+                  target:
+                    area_id: office
+                  action: light.turn_on
+            - delay:
+                hours: 0
+                minutes: 0
+                seconds: 0
+                milliseconds: 200
+            count: 50
 mode: restart
