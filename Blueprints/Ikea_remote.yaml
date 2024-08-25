@@ -148,12 +148,12 @@ action:
       off_double_press: !input off_double_press
       z2m_controller: !input remote_name
       light_1: !input target_light.area_id
-      lights: { 
+      lights: "{{ 
                 expand(states.light) 
                 |selectattr('entity_id', 'in', area_entities('Bedroom'))
                 |map(attribute='entity_id')
                 |list
-              }
+              }}"
   - choose:
       - conditions:
           - condition: trigger
