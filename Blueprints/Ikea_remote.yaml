@@ -117,7 +117,7 @@ action:
   - variables:
       on_double_press: !input on_double_press
       off_double_press: !input off_double_press
-      z2m_controller: test
+      z2m_controller: device_attr(device_id(!input source_switch_e1743_action), "name_by_user")
   - choose:
       - conditions:
           - condition: trigger
@@ -130,7 +130,7 @@ action:
             then:
               - wait_for_trigger:
                   - platform: mqtt
-                    topic: "{{ 'zigbee2mqtt/' ~ z2m_controller.name_by_user ~ '/action' }}"
+                    topic: "{{ 'zigbee2mqtt/' ~ z2m_controller ~ '/action' }}"
                     payload: "on"
                 timeout:
                   milliseconds: !input helper_double_press_delay
