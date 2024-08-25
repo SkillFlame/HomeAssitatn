@@ -155,7 +155,7 @@ action:
           - condition: trigger
             id:
               - "off"
-        ssequence:
+        sequence:
           - if:
               - condition: template
                 value_template: "{{ off_double_press }}"
