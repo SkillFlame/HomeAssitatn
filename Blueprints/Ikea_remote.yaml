@@ -19,7 +19,7 @@ blueprint:
       name: Target Light
       description: the light you want to control.
       selector:
-        target:
+        area:
     on_double_press:
       name: On - Double press event
       description:
