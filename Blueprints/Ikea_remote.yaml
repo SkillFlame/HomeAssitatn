@@ -117,7 +117,6 @@ action:
   - variables:
       on_double_press: !input on_double_press
       off_double_press: !input off_double_press
-      z2m_base_topic: !input base_topic
       z2m_controller: !input source_switch_e1743_action
   - choose:
       - conditions:
