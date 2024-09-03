@@ -123,18 +123,20 @@ action:
       off_double_press: !input off_double_press
       z2m_controller: !input remote_name
       area: !input target_light
-      lights: "{{% set lights = expand(states.light)
+      lights: >
+              {% set area_id = area_entities(input.area) %}
+              {% set lights = expand(states.light)
                 | selectattr('state', 'eq', 'on')
-                | selectattr('entity_id', 'in', area_entities('bedroom')) 
+                | selectattr('entity_id', 'in', area_id)
                 | selectattr('attributes.brightness', 'defined')
                 | selectattr('attributes.brightness', '!=', none)
                 | sort(attribute='attributes.brightness', reverse=True) 
                 | list %}
-                {% if lights %}
-                  {{ lights[0].entity_id }}
-                {% else %}
-                  None
-                {% endif %}}"
+              {% if lights %}
+                {{ lights[0].entity_id }}
+              {% else %}
+                None
+              {% endif %}
   - choose:
       - conditions:
           - condition: trigger
