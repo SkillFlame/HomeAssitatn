@@ -122,8 +122,9 @@ action:
       on_double_press: !input on_double_press
       off_double_press: !input off_double_press
       z2m_controller: !input remote_name
+      area: !input area
       lights: >
-              {% set area_id = area_entities(input.area) %}
+              {% set area_id = area_entities(area.area_id) %}
               {% set lights = expand(states.light)
                 | selectattr('state', 'eq', 'on')
                 | selectattr('entity_id', 'in', area_id)
