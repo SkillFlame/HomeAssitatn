@@ -15,9 +15,9 @@ blueprint:
       name: (Zigbee2MQTT) Remote Name
       description: The name of the controller (e.g. IKEA Rodret). **_Choose if you are using Zigbee2MQTT._**
       default: ""
-    target_light:
-      name: Target Light
-      description: the light you want to control.
+    area:
+      name: Area
+      description: the area you want to control.
       selector:
         target:
     on_double_press:
@@ -122,7 +122,6 @@ action:
       on_double_press: !input on_double_press
       off_double_press: !input off_double_press
       z2m_controller: !input remote_name
-      area: !input target_light
       lights: >
               {% set area_id = area_entities(input.area) %}
               {% set lights = expand(states.light)
@@ -161,11 +160,11 @@ action:
                 else: 
                   - service: light.turn_on
                     data: {}
-                    target: !input target_light
+                    target: !input area
             else: 
               - service: light.turn_on
                 data: {}
-                target: !input target_light
+                target: !input area
       - conditions:
           - condition: trigger
             id:
@@ -189,11 +188,11 @@ action:
                 else: 
                   - service: light.turn_off
                     data: {}
-                    target: !input target_light
+                    target: !input area
             else: 
               - service: light.turn_off
                 data: {}
-                target: !input target_light
+                target: !input area
       - conditions:
           - condition: trigger
             id:
@@ -217,11 +216,11 @@ action:
                 else: 
                   - service: light.turn_on
                     data: {}
-                    target: !input target_light
+                    target: !input area
             else: 
               - service: light.turn_on
                 data: {}
-                target: !input target_light
+                target: !input area
       - conditions:
           - condition: trigger
             id:
@@ -245,11 +244,11 @@ action:
                 else: 
                   - service: light.turn_on
                     data: {}
-                    target: !input target_light
+                    target: !input area
             else: 
               - service: light.turn_on
                 data: {}
-                target: !input target_light
+                target: !input area
       - conditions:
           - condition: trigger
             id:
@@ -261,7 +260,7 @@ action:
                   data:
                     brightness_step_pct: 5
                     transition: 0.2
-                  target: !input target_light
+                  target: !input area
                 - delay:
                     hours: 0
                     minutes: 0
@@ -284,13 +283,13 @@ action:
                       metadata: {}
                       data:
                         brightness_pct: 1
-                      target: !input target_light
+                      target: !input area
                   else:
                     - service: light.turn_on
                       data:
                         brightness_step_pct: -5
                         transition: 0.2
-                      target: !input target_light
+                      target: !input area
                 - delay:
                     milliseconds: 200
 mode: restart
