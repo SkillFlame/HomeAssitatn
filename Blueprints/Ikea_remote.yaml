@@ -69,28 +69,6 @@ blueprint:
           max: 5000.0
           step: 10.0
           mode: slider
-    min_brightness:
-      name: (Optional) Light minimum brightness
-      description: The minimum brightness the light can be set with this automation.
-      default: 1
-      selector:
-        number:
-          min: 1
-          max: 255
-          step: 1
-          unit_of_measurement: brightness
-          mode: slider
-    max_brightness:
-      name: (Optional) Light maximum brightness
-      description: The maximum brightness the light can be set with this automation.
-      default: 255
-      selector:
-        number:
-          min: 0
-          max: 255
-          step: 1
-          unit_of_measurement: brightness
-          mode: slider
 alias: Ikea remote via zigbee2mqtt
 description: ""
 trigger:
@@ -145,13 +123,18 @@ action:
       off_double_press: !input off_double_press
       z2m_controller: !input remote_name
       area: !input target_light
-      lights: "{{ 
-                expand(states.light) 
-                |selectattr('state', 'eq', 'on')
-                |selectattr('entity_id', 'in', area_entities(area.area_id))
-                |sort(attribute='attributes.brightness', reverse=True)
-                |map(attribute='entity_id') |first 
-              }}"
+      lights: "{{% set lights = expand(states.light)
+                | selectattr('state', 'eq', 'on')
+                | selectattr('entity_id', 'in', area_entities('bedroom')) 
+                | selectattr('attributes.brightness', 'defined')
+                | selectattr('attributes.brightness', '!=', none)
+                | sort(attribute='attributes.brightness', reverse=True) 
+                | list %}
+                {% if lights %}
+                  {{ lights[0].entity_id }}
+                {% else %}
+                  None
+                {% endif %}}"
   - choose:
       - conditions:
           - condition: trigger
