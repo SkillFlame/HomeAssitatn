@@ -15,9 +15,9 @@ blueprint:
       name: (Zigbee2MQTT) Remote Name
       description: The name of the controller (e.g. IKEA Rodret). **_Choose if you are using Zigbee2MQTT._**
       default: ""
-    area:
-      name: Area
-      description: the area you want to control.
+    lights:
+      name: lights
+      description: the lights you want to control.
       selector:
         target:
     on_double_press:
@@ -122,21 +122,7 @@ action:
       on_double_press: !input on_double_press
       off_double_press: !input off_double_press
       z2m_controller: !input remote_name
-      area: !input area
-      lights: >
-              {% set area_id = area_entities(area.area_id) %}
-              {% set lights = expand(states.light)
-                | selectattr('state', 'eq', 'on')
-                | selectattr('entity_id', 'in', area_id)
-                | selectattr('attributes.brightness', 'defined')
-                | selectattr('attributes.brightness', '!=', none)
-                | sort(attribute='attributes.brightness', reverse=True) 
-                | list %}
-              {% if lights %}
-                {{ lights[0].entity_id }}
-              {% else %}
-                None
-              {% endif %}
+      lights: !input lights
   - choose:
       - conditions:
           - condition: trigger
