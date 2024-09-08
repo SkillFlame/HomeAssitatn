@@ -147,11 +147,11 @@ action:
                 else: 
                   - service: light.turn_on
                     data: {}
-                    target: !input area
+                    target: !input lights
             else: 
               - service: light.turn_on
                 data: {}
-                target: !input area
+                target: !input lights
       - conditions:
           - condition: trigger
             id:
@@ -175,11 +175,11 @@ action:
                 else: 
                   - service: light.turn_off
                     data: {}
-                    target: !input area
+                    target: !input lights
             else: 
               - service: light.turn_off
                 data: {}
-                target: !input area
+                target: !input lights
       - conditions:
           - condition: trigger
             id:
@@ -203,11 +203,11 @@ action:
                 else: 
                   - service: light.turn_on
                     data: {}
-                    target: !input area
+                    target: !input lights
             else: 
               - service: light.turn_on
                 data: {}
-                target: !input area
+                target: !input lights
       - conditions:
           - condition: trigger
             id:
@@ -231,11 +231,11 @@ action:
                 else: 
                   - service: light.turn_on
                     data: {}
-                    target: !input area
+                    target: !input lights
             else: 
               - service: light.turn_on
                 data: {}
-                target: !input area
+                target: !input lights
       - conditions:
           - condition: trigger
             id:
@@ -247,7 +247,7 @@ action:
                   data:
                     brightness_step_pct: 5
                     transition: 0.2
-                  target: !input area
+                  target: !input lights
                 - delay:
                     hours: 0
                     minutes: 0
@@ -270,13 +270,13 @@ action:
                       metadata: {}
                       data:
                         brightness_pct: 1
-                      target: !input area
+                      target: !input lights
                   else:
                     - service: light.turn_on
                       data:
                         brightness_step_pct: -5
                         transition: 0.2
-                      target: !input area
+                      target: !input lights
                 - delay:
                     milliseconds: 200
 mode: restart
