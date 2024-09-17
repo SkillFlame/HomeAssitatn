@@ -247,9 +247,11 @@ action:
                           250  # Cooler color temperature
                         {% else %}
                           470  # Max warm (very warm light)
-                        {% endif %} | int
+                        {% endif %}
                       transition: 1
                     target: !input lights
+                    data:
+                      color_temp: "{{ int(value_template) }}"
             else: 
               - service: light.turn_on
                 data_template:
@@ -263,9 +265,11 @@ action:
                       250  # Cooler color temperature
                     {% else %}
                       470  # Max warm (very warm light)
-                    {% endif %} | int
+                    {% endif %}
                   transition: 1
                 target: !input lights
+                data:
+                  color_temp: "{{ int(value_template) }}"
       - conditions:
           - condition: trigger
             id:
@@ -299,9 +303,11 @@ action:
                           470  # Warmer temperature (max)
                         {% else %}
                           370  # Daylight temperature
-                        {% endif %} | int
+                        {% endif %}
                       transition: 1
                     target: !input lights
+                    data:
+                      color_temp: "{{ int(value_template) }}"
             else: 
               - service: light.turn_on
                 data_template:
@@ -315,9 +321,11 @@ action:
                       470  # Warmer temperature (max)
                     {% else %}
                       370  # Daylight temperature
-                    {% endif %} | int
+                    {% endif %}
                   transition: 1
                 target: !input lights
+                data:
+                  color_temp: "{{ int(value_template) }}"
       - conditions:
           - condition: trigger
             id:
