@@ -54,6 +54,40 @@ blueprint:
       default: []
       selector:
         action: {}
+    arrow_left_click_double_press:
+      name: arrow_left_click - Double press event
+      description:
+        Choose whether or not to expose the virtual **double press** event
+        for the **arrow_left_click** button. Turn this on if you are providing an action for the **arrow_left_click**
+        button double press event.
+      default: false
+      selector:
+        boolean: {}
+    arrow_left_click_double_press_action:
+      name: arrow_left_click - Double press action
+      description:
+        Choose action(s) to run when pressing the **arrow_left_click** button twice in **Helper - Double press
+        delay** interval. **arrow_left_click - Double press event** must be exposed.
+      default: []
+      selector:
+        action: {}
+    arrow_right_click_double_press:
+      name: arrow_right_click - Double press event
+      description:
+        Choose whether or not to expose the virtual **double press** event
+        for the **arrow_right_click** button. Turn this on if you are providing an action for the **arrow_right_click**
+        button double press event.
+      default: false
+      selector:
+        boolean: {}
+    arrow_right_click_double_press_action:
+      name: arrow_right_click - Double press action
+      description:
+        Choose action(s) to run when pressing the **arrow_right_click** button twice in **Helper - Double press
+        delay** interval. **arrow_right_click - Double press event** must be exposed.
+      default: []
+      selector:
+        action: {}
     helper_double_press_delay:
       name: Helper - Double press delay
       description:
@@ -183,58 +217,106 @@ action:
       - conditions:
           - condition: trigger
             id:
-              - "on"
+              - "arrow_left_click"
         sequence:
           - if:
               - condition: template
-                value_template: "{{ on_double_press }}"
+                value_template: "{{ arrow_left_click_double_press }}"
             then:
               - wait_for_trigger:
                   - platform: mqtt
                     topic: "{{ 'zigbee2mqtt/' ~ z2m_controller ~ '/action' }}"
-                    payload: "on"
+                    payload: "arrow_left_click"
                 timeout:
                   milliseconds: !input helper_double_press_delay
                 continue_on_timeout: true
               - if:
                   - condition: template
                     value_template: "{{ wait.trigger.idx is defined }}"
-                then: !input on_double_press_action
+                then: !input arrow_left_click_double_press_action
                 else: 
                   - service: light.turn_on
-                    data: {}
+                    data_template:
+                      color_temp: >
+                        {% set current_temp = state_attr(lights.entity_id | first, 'color_temp') %}
+                        {% if current_temp is none %}
+                          370  # Default if no temperature is set
+                        {% elif current_temp <= 250 %}
+                          370  # Warmer color temperature (closer to daylight)
+                        {% elif current_temp > 370 %}
+                          250  # Cooler color temperature
+                        {% else %}
+                          470  # Max warm (very warm light)
+                        {% endif %}
+                      transition: 1
                     target: !input lights
             else: 
               - service: light.turn_on
-                data: {}
+                data_template:
+                  color_temp: >
+                    {% set current_temp = state_attr(lights.entity_id | first, 'color_temp') %}
+                    {% if current_temp is none %}
+                      370  # Default if no temperature is set
+                    {% elif current_temp <= 250 %}
+                      370  # Warmer color temperature (closer to daylight)
+                    {% elif current_temp > 370 %}
+                      250  # Cooler color temperature
+                    {% else %}
+                      470  # Max warm (very warm light)
+                    {% endif %}
+                  transition: 1
                 target: !input lights
       - conditions:
           - condition: trigger
             id:
-              - "on"
+              - "arrow_right_click"
         sequence:
           - if:
               - condition: template
-                value_template: "{{ on_double_press }}"
+                value_template: "{{ arrow_right_click_double_press }}"
             then:
               - wait_for_trigger:
                   - platform: mqtt
                     topic: "{{ 'zigbee2mqtt/' ~ z2m_controller ~ '/action' }}"
-                    payload: "on"
+                    payload: "arrow_right_click"
                 timeout:
                   milliseconds: !input helper_double_press_delay
                 continue_on_timeout: true
               - if:
                   - condition: template
                     value_template: "{{ wait.trigger.idx is defined }}"
-                then: !input on_double_press_action
+                then: !input arrow_right_click_double_press_action
                 else: 
                   - service: light.turn_on
-                    data: {}
+                    data_template:
+                      color_temp: >
+                        {% set current_temp = state_attr(lights.entity_id | first, 'color_temp') %}
+                        {% if current_temp is none %}
+                          470  # Start at max warm
+                        {% elif current_temp >= 470 %}
+                          250  # Cycle to cooler temperature
+                        {% elif current_temp < 250 %}
+                          470  # Warmer temperature (max)
+                        {% else %}
+                          370  # Daylight temperature
+                        {% endif %}
+                      transition: 1
                     target: !input lights
             else: 
               - service: light.turn_on
-                data: {}
+                data_template:
+                  color_temp: >
+                    {% set current_temp = state_attr(lights.entity_id | first, 'color_temp') %}
+                    {% if current_temp is none %}
+                      470  # Start at max warm
+                    {% elif current_temp >= 470 %}
+                      250  # Cycle to cooler temperature
+                    {% elif current_temp < 250 %}
+                      470  # Warmer temperature (max)
+                    {% else %}
+                      370  # Daylight temperature
+                    {% endif %}
+                  transition: 1
                 target: !input lights
       - conditions:
           - condition: trigger
