@@ -254,7 +254,7 @@ action:
               - service: light.turn_on
                 data_template:
                   color_temp: >
-                    {{% set current_temp = state_attr(lights.entity_id | first, 'color_temp') %}
+                    {% set current_temp = state_attr(lights.entity_id | first, 'color_temp') %}
                     {% if current_temp is none %}
                       370  # Default if no temperature is set
                     {% elif current_temp | int <= 250 %}
