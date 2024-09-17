@@ -247,7 +247,7 @@ action:
                           250  # Cooler color temperature
                         {% else %}
                           470  # Max warm (very warm light)
-                        {% endif %}
+                        {% endif %} | int
                       transition: 1
                     target: !input lights
             else: 
@@ -263,7 +263,7 @@ action:
                       250  # Cooler color temperature
                     {% else %}
                       470  # Max warm (very warm light)
-                    {% endif %}
+                    {% endif %} | int
                   transition: 1
                 target: !input lights
       - conditions:
@@ -299,7 +299,7 @@ action:
                           470  # Warmer temperature (max)
                         {% else %}
                           370  # Daylight temperature
-                        {% endif %}
+                        {% endif %} | int
                       transition: 1
                     target: !input lights
             else: 
@@ -315,7 +315,7 @@ action:
                       470  # Warmer temperature (max)
                     {% else %}
                       370  # Daylight temperature
-                    {% endif %}
+                    {% endif %} | int
                   transition: 1
                 target: !input lights
       - conditions:
