@@ -264,7 +264,7 @@ action:
               sequence:
                 - if:
                     - condition: template
-                      value_template: "{{ state_attr(lights, 'brightness') < 13 }}"
+                      value_template: "{{ lights.brightness < 13 }}"
                   then:
                     - action: light.turn_on
                       metadata: {}
