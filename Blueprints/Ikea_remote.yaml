@@ -238,7 +238,7 @@ action:
                   - service: light.turn_on
                     data_template:
                       color_temp: >
-                        {% set current_temp = state_attr(lights.entity_id | first, 'color_temp') %}
+                        {% set current_temp = state_attr(lights.entity_id | first, 'color_temp') | int %}
                         {% if current_temp is none %}
                           370  # Default if no temperature is set
                         {% elif current_temp <= 250 %}
@@ -254,7 +254,7 @@ action:
               - service: light.turn_on
                 data_template:
                   color_temp: >
-                    {% set current_temp = state_attr(lights.entity_id | first, 'color_temp') %}
+                    {% set current_temp = state_attr(lights.entity_id | first, 'color_temp') | int %}
                     {% if current_temp is none %}
                       370  # Default if no temperature is set
                     {% elif current_temp <= 250 %}
@@ -290,7 +290,7 @@ action:
                   - service: light.turn_on
                     data_template:
                       color_temp: >
-                        {% set current_temp = state_attr(lights.entity_id | first, 'color_temp') %}
+                        {% set current_temp = state_attr(lights.entity_id | first, 'color_temp') | int %}
                         {% if current_temp is none %}
                           470  # Start at max warm
                         {% elif current_temp >= 470 %}
@@ -306,7 +306,7 @@ action:
               - service: light.turn_on
                 data_template:
                   color_temp: >
-                    {% set current_temp = state_attr(lights.entity_id | first, 'color_temp') %}
+                    {% set current_temp = state_attr(lights.entity_id | first, 'color_temp') | int %}
                     {% if current_temp is none %}
                       470  # Start at max warm
                     {% elif current_temp >= 470 %}
