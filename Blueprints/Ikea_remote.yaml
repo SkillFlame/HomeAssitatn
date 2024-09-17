@@ -264,7 +264,8 @@ action:
               sequence:
                 - if:
                     - condition: template
-                      value_template: "{{ lights.brightness < 13 }}"
+                      value_template: >
+                        {{ expand('group.lights') | selectattr('attributes.brightness', 'defined') | map(attribute='attributes.brightness') | min < 13 }}
                   then:
                     - action: light.turn_on
                       metadata: {}
