@@ -236,40 +236,20 @@ action:
                 then: !input arrow_left_click_double_press_action
                 else: 
                   - service: light.turn_on
-                    data_template:
-                      color_temp: >
-                        {% set current_temp = state_attr(lights.entity_id | first, 'color_temp') %}
-                        {% if current_temp is none %}
-                          370  # Default if no temperature is set
-                        {% elif current_temp | int <= 250 %}
-                          370  # Warmer color temperature (closer to daylight)
-                        {% elif current_temp | int > 370 %}
-                          250  # Cooler color temperature
-                        {% else %}
-                          470  # Max warm (very warm light)
-                        {% endif %}
-                      transition: 1
-                    target: !input lights
                     data:
-                      color_temp: "{{ int(value_template) }}"
+                      color_temp: '{{ state_attr(lights.entity_id,"color_temp")|int - 50 }}'
+                      transition: 0.2
+                    target: !input lights
+                  - delay:
+                      milliseconds: 200
             else: 
               - service: light.turn_on
-                data_template:
-                  color_temp: >
-                    {% set current_temp = state_attr(lights.entity_id | first, 'color_temp') %}
-                    {% if current_temp is none %}
-                      370  # Default if no temperature is set
-                    {% elif current_temp | int <= 250 %}
-                      370  # Warmer color temperature (closer to daylight)
-                    {% elif current_temp | int > 370 %}
-                      250  # Cooler color temperature
-                    {% else %}
-                      470  # Max warm (very warm light)
-                    {% endif %}
-                  transition: 1
-                target: !input lights
                 data:
-                  color_temp: "{{ int(value_template) }}"
+                  color_temp: '{{ state_attr(lights.entity_id,"color_temp")|int - 50 }}'
+                  transition: 0.2
+                target: !input lights
+              - delay:
+                  milliseconds: 200
       - conditions:
           - condition: trigger
             id:
@@ -292,40 +272,20 @@ action:
                 then: !input arrow_right_click_double_press_action
                 else: 
                   - service: light.turn_on
-                    data_template:
-                      color_temp: >
-                        {% set current_temp = state_attr(lights.entity_id | first, 'color_temp') %}
-                        {% if current_temp is none %}
-                          470  # Start at max warm if no temperature is set
-                        {% elif current_temp | int >= 470 %}
-                          250  # Cycle to cooler temperature
-                        {% elif current_temp | int < 250 %}
-                          470  # Warmer temperature (max)
-                        {% else %}
-                          370  # Daylight temperature
-                        {% endif %}
-                      transition: 1
-                    target: !input lights
                     data:
-                      color_temp: "{{ int(value_template) }}"
+                      color_temp: '{{ state_attr(lights.entity_id,"color_temp")|int + 50 }}'
+                      transition: 0.2
+                    target: !input lights
+                  - delay:
+                      milliseconds: 200
             else: 
               - service: light.turn_on
-                data_template:
-                  color_temp: >
-                    {% set current_temp = state_attr(lights.entity_id | first, 'color_temp') %}
-                    {% if current_temp is none %}
-                      470  # Start at max warm if no temperature is set
-                    {% elif current_temp | int >= 470 %}
-                      250  # Cycle to cooler temperature
-                    {% elif current_temp | int < 250 %}
-                      470  # Warmer temperature (max)
-                    {% else %}
-                      370  # Daylight temperature
-                    {% endif %}
-                  transition: 1
-                target: !input lights
                 data:
-                  color_temp: "{{ int(value_template) }}"
+                  color_temp: '{{ state_attr(lights.entity_id,"color_temp")|int + 50 }}'
+                  transition: 0.2
+                target: !input lights
+              - delay:
+                  milliseconds: 200
       - conditions:
           - condition: trigger
             id:
@@ -339,9 +299,6 @@ action:
                     transition: 0.2
                   target: !input lights
                 - delay:
-                    hours: 0
-                    minutes: 0
-                    seconds: 0
                     milliseconds: 200
               count: 50
       - conditions:
@@ -354,7 +311,7 @@ action:
               sequence:
                 - if:
                     - condition: template
-                      value_template: "{{ state_attr(lights.entity_id, 'brightness') <= 20 }}"
+                      value_template: "{{ state_attr(lights.entity_id, 'brightness') <= 13 }}"
                   then:
                     - action: light.turn_on
                       metadata: {}
