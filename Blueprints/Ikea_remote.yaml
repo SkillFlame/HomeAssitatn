@@ -237,7 +237,7 @@ action:
                 else: 
                   - service: light.turn_on
                     data:
-                      kelvin: '{{ state_attr(lights.entity_id,"color_temp_kelvin")|int - 50 }}'
+                      kelvin: '{{ state_attr(lights.entity_id,"color_temp_kelvin")|int - 150 }}'
                       transition: 0.2
                     target: !input lights
                   - delay:
@@ -245,7 +245,7 @@ action:
             else: 
               - service: light.turn_on
                 data:
-                  kelvin: '{{ state_attr(lights.entity_id,"color_temp_kelvin")|int - 50 }}'
+                  kelvin: '{{ state_attr(lights.entity_id,"color_temp_kelvin")|int - 150 }}'
                   transition: 0.2
                 target: !input lights
               - delay:
@@ -273,7 +273,7 @@ action:
                 else: 
                   - service: light.turn_on
                     data:
-                      kelvin: '{{ state_attr(lights.entity_id,"color_temp_kelvin")|int + 50 }}'
+                      kelvin: '{{ state_attr(lights.entity_id,"color_temp_kelvin")|int + 150 }}'
                       transition: 0.2
                     target: !input lights
                   - delay:
@@ -281,7 +281,7 @@ action:
             else: 
               - service: light.turn_on
                 data:
-                  kelvin: '{{ state_attr(lights.entity_id,"color_temp_kelvin")|int + 50 }}'
+                  kelvin: '{{ state_attr(lights.entity_id,"color_temp_kelvin")|int + 150 }}'
                   transition: 0.2
                 target: !input lights
               - delay:
