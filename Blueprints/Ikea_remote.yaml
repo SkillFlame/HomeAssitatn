@@ -122,7 +122,6 @@ trigger:
     entity_id: !input source_switch_e1743_action
     id: arrow_right_click
     to: arrow_right_click
-  - platform: state
 condition: []
 action:
   - variables:
