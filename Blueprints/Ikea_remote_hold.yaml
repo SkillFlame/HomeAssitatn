@@ -1,0 +1,100 @@
+blueprint:
+  name: Ikea remote via zigbee2mqtt
+  description: "Controls a light with a switch given by ENTITY. \n\nShort Button press will toggle light for both Buttons (helpfull in darkness) \n\n Mode set to restart is mandatory for stop after long press to work."
+  domain: automation
+  input:
+    source_switch_e1743_action:
+      name: Tradfri E1743 Switch
+      description: The switch-action which triggers this automation.
+      selector:
+        entity:
+          filter:
+            - integration: mqtt
+              domain: sensor
+    remote_name:
+      name: (Zigbee2MQTT) Remote Name
+      description: The name of the controller (e.g. IKEA Rodret). **_Choose if you are using Zigbee2MQTT._**
+      default: ""
+    lights:
+      name: lights
+      description: the lights you want to control.
+      selector:
+        target:
+alias: Ikea remote via zigbee2mqtt
+description: ""
+trigger:
+  - platform: state
+    entity_id: !input source_switch_e1743_action
+    id: brightness_move_up
+    to: brightness_move_up
+  - platform: state
+    entity_id: !input source_switch_e1743_action
+    id: brightness_move_down
+    to: brightness_move_down
+  - platform: state
+    entity_id: !input source_switch_e1743_action
+    id: arrow_left_hold
+    to: arrow_left_hold
+  - platform: state
+    entity_id: !input source_switch_e1743_action
+    id: arrow_right_hold
+    to: arrow_right_hold
+  - platform: state
+    entity_id: !input source_switch_e1743_action
+    id: brightness_stop
+    to: brightness_stop
+  - platform: state
+    entity_id: !input source_switch_e1743_action
+    id: arrow_left_release
+    to: arrow_left_release
+  - platform: state
+    entity_id: !input source_switch_e1743_action
+    id: arrow_right_release
+    to: arrow_right_release  
+condition: []
+action:
+  - variables:
+      z2m_controller: !input remote_name
+      lights: !input lights
+  - choose:
+      - conditions:
+          - condition: trigger
+            id:
+              - brightness_move_up
+        sequence:
+          - repeat:
+              sequence:
+                - service: light.turn_on
+                  data:
+                    brightness_step_pct: 5
+                    transition: 0.2
+                  target: !input lights
+                - delay:
+                    milliseconds: 200
+              count: 50
+      - conditions:
+          - condition: trigger
+            id:
+              - brightness_move_down
+        sequence:
+          - repeat:
+              count: 50
+              sequence:
+                - if:
+                    - condition: template
+                      value_template: "{{ state_attr(lights.entity_id, 'brightness') <= 13 }}"
+                  then:
+                    - action: light.turn_on
+                      metadata: {}
+                      data:
+                        brightness_pct: 1
+                      target: !input lights
+                  else:
+                    - service: light.turn_on
+                      data:
+                        brightness_step_pct: -5
+                        transition: 0.2
+                      target: !input lights
+                - delay:
+                    milliseconds: 200
+mode: restart
