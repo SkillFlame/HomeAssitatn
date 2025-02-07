@@ -95,7 +95,7 @@ blueprint:
         **Double press events**. Provide a value only if you are using a double press action.
         Increase this value if you notice that the double press action is not triggered
         properly.
-      default: 400
+      default: 500
       selector:
         number:
           unit_of_measurement: milliseconds
